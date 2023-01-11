@@ -1,5 +1,5 @@
 #include<SoftwareSerial.h>
-SoftwareSerial bt(4,5);
+SoftwareSerial bt(0,1);
 
 #define in1 13
 #define in2 12
@@ -15,6 +15,7 @@ int hitam = 0;
 int putih = 1;
 int motorSpeedA = 0;
 int motorSpeedB = 0;
+const int led = 10;
 
 void setup(){
   pinMode(in1, OUTPUT);
@@ -25,6 +26,7 @@ void setup(){
   pinMode(enB, OUTPUT);
   pinMode(sensorKiri,INPUT);
   pinMode(sensorKanan,INPUT);
+  pinMode(led, OUTPUT);  
 
   bt.begin(9600);
 
@@ -36,6 +38,7 @@ void maju() {
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH);
   delay(100);
+  
 }
 
 void belokKanan() {
@@ -73,10 +76,12 @@ void mundur() {
 void loop(){
    int sensorL_Kena = digitalRead(sensorKiri);
   int sensorR_Kena = digitalRead(sensorKanan);
-    motorSpeedA = 150;
-  motorSpeedB = 150;
+    motorSpeedA = 130;
+  motorSpeedB = 130;
   analogWrite(enA, motorSpeedA);
   analogWrite(enB, motorSpeedB);
+
+  digitalWrite(led, HIGH);
 
   if (bt.available()) {
     v = bt.read();
@@ -97,6 +102,8 @@ void loop(){
   }else{
     if ((sensorL_Kena == hitam) && (sensorR_Kena==hitam)) {
       berhenti();
+      digitalWrite(led, LOW);
+      delay(800);            
     }
     if ((sensorL_Kena == hitam) && (sensorR_Kena==putih)) {
       belokKiri();

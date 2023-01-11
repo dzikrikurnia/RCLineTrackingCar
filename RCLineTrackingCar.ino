@@ -99,7 +99,7 @@ void loop(){
     if(v == 'B'){
       mundur();
     }
-  }else{
+  }else if(bt.available()>0){
     if ((sensorL_Kena == hitam) && (sensorR_Kena==hitam)) {
       berhenti();
       digitalWrite(led, LOW);

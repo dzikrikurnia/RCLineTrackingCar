@@ -8,7 +8,6 @@ SoftwareSerial bt(0,1);
 #define enA 7
 #define enB 6
 
-int v;
 int sensorKiri = 2;
 int sensorKanan = 3;
 int hitam = 0;
@@ -29,7 +28,7 @@ void setup(){
   pinMode(led, OUTPUT);  
 
   bt.begin(9600);
-
+  Serial.begin(9600);
 }
 
 void maju() {
@@ -74,18 +73,19 @@ void mundur() {
 }
 
 void loop(){
-   int sensorL_Kena = digitalRead(sensorKiri);
+  int sensorL_Kena = digitalRead(sensorKiri);
   int sensorR_Kena = digitalRead(sensorKanan);
-    motorSpeedA = 130;
+  motorSpeedA = 130; 
   motorSpeedB = 130;
   analogWrite(enA, motorSpeedA);
   analogWrite(enB, motorSpeedB);
 
   digitalWrite(led, HIGH);
 
-  if (bt.available()) {
-    v = bt.read();
-    bt.println(v);
+  String v;
+  if (bt.available()>0) {
+    v = bt.readString();
+    Serial.println(v);
 
     if(v == 'F'){
       maju();
